@@ -1,6 +1,6 @@
 {
   "appId": "com.taxicel.agenda",
-  "appName": "Agenda Taxi",
+  "appName": "TaxiCentral",
   "webDir": "www",
   "server": {
     "url": "https://agenda-taxi.pages.dev",

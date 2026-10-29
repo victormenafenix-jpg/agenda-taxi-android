@@ -47,6 +47,39 @@ const gs = path.join(raiz, 'google-services.json');
 if (fs.existsSync(gs)) { fs.copyFileSync(gs, path.join(app, 'google-services.json')); console.log('✓ Firebase (google-services.json)'); }
 else console.log('· Sin google-services.json todavía (las notificaciones nativas se activan después)');
 
+// 3b) Canal de notificaciones "servicios" con sonido propio (res/raw/servicio.wav)
+const ma = path.join(app, 'src', 'main', 'java', 'com', 'taxicel', 'agenda', 'MainActivity.java');
+fs.writeFileSync(ma, `package com.taxicel.agenda;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.media.AudioAttributes;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import com.getcapacitor.BridgeActivity;
+
+public class MainActivity extends BridgeActivity {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel canal = new NotificationChannel("servicios", "Servicios nuevos", NotificationManager.IMPORTANCE_HIGH);
+            canal.setDescription("Aviso cuando llega un servicio");
+            canal.enableVibration(true);
+            canal.setVibrationPattern(new long[]{0, 500, 250, 500});
+            Uri sonido = Uri.parse("android.resource://" + getPackageName() + "/raw/servicio");
+            AudioAttributes aa = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build();
+            canal.setSound(sonido, aa);
+            getSystemService(NotificationManager.class).createNotificationChannel(canal);
+        }
+    }
+}
+`);
+console.log('✓ Canal de notificaciones "servicios" con sonido');
+
 // 4) Versión: cada compilación sube el número para que se pueda instalar encima
 const n = parseInt(process.env.GITHUB_RUN_NUMBER || '1', 10);
 const bg = path.join(app, 'build.gradle');
