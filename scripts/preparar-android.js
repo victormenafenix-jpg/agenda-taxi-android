@@ -87,3 +87,28 @@ let g = fs.readFileSync(bg, 'utf8');
 g = g.replace(/versionCode\s+\d+/, 'versionCode ' + n).replace(/versionName\s+"[^"]*"/, 'versionName "1.0.' + n + '"');
 fs.writeFileSync(bg, g);
 console.log('✓ Versión 1.0.' + n);
+
+// 5) Google Play pide apuntar a Android 16 (API 36) para apps nuevas
+const vg = path.join(raiz, 'android', 'variables.gradle');
+if (fs.existsSync(vg)) {
+  let v = fs.readFileSync(vg, 'utf8');
+  v = v.replace(/compileSdkVersion\s*=\s*\d+/, 'compileSdkVersion = 36').replace(/targetSdkVersion\s*=\s*\d+/, 'targetSdkVersion = 36');
+  fs.writeFileSync(vg, v);
+  const gp = path.join(raiz, 'android', 'gradle.properties');
+  let p = fs.readFileSync(gp, 'utf8');
+  if (!p.includes('suppressUnsupportedCompileSdk')) fs.appendFileSync(gp, '\nandroid.suppressUnsupportedCompileSdk=36\n');
+  console.log('✓ Android 16 (API 36)');
+}
+
+// 6) Versión para Play Store: quitar permisos que Google restringe
+//    (pantalla completa y alarmas exactas). Solo cuando se arma el .aab.
+if (process.env.PARA_PLAY === '1') {
+  let mm = fs.readFileSync(mf, 'utf8');
+  if (!mm.includes('xmlns:tools')) mm = mm.replace('<manifest ', '<manifest xmlns:tools="http://schemas.android.com/tools" ');
+  for (const p of ['android.permission.USE_FULL_SCREEN_INTENT', 'android.permission.SCHEDULE_EXACT_ALARM', 'android.permission.USE_EXACT_ALARM']) {
+    mm = mm.split('\n').filter((l) => !l.includes('"' + p + '"')).join('\n');
+    mm = mm.replace('</manifest>', '    <uses-permission android:name="' + p + '" tools:node="remove" />\n</manifest>');
+  }
+  fs.writeFileSync(mf, mm);
+  console.log('✓ Permisos restringidos quitados (versión Play Store)');
+}

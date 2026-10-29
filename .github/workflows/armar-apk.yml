@@ -8,6 +8,8 @@ on:
 jobs:
   armar:
     runs-on: ubuntu-latest
+    env:
+      HAY_FIRMA: ${{ secrets.FIRMA_PLAY_BASE64 != '' }}
     steps:
       - name: Bajar el proyecto
         uses: actions/checkout@v4
@@ -47,3 +49,35 @@ jobs:
           name: AgendaTaxi-${{ github.run_number }}
           path: android/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30
+
+      # ---- Versión para Google Play (.aab firmado) ----
+      # Solo se arma si ya guardaste la firma en GitHub:
+      # Settings > Secrets and variables > Actions > FIRMA_PLAY_BASE64 y FIRMA_PLAY_CLAVE
+      - name: Preparar versión para Play Store
+        if: env.HAY_FIRMA == 'true'
+        env:
+          FIRMA: ${{ secrets.FIRMA_PLAY_BASE64 }}
+          PARA_PLAY: '1'
+        run: |
+          node scripts/preparar-android.js
+          echo "$FIRMA" | base64 -d > "$RUNNER_TEMP/subida.jks"
+
+      - name: Armar el .aab para Play Store
+        if: env.HAY_FIRMA == 'true'
+        working-directory: android
+        env:
+          CLAVE: ${{ secrets.FIRMA_PLAY_CLAVE }}
+        run: |
+          ./gradlew bundleRelease --no-daemon \
+            -Pandroid.injected.signing.store.file="$RUNNER_TEMP/subida.jks" \
+            -Pandroid.injected.signing.store.password="$CLAVE" \
+            -Pandroid.injected.signing.key.alias=subida \
+            -Pandroid.injected.signing.key.password="$CLAVE"
+
+      - name: Guardar el .aab para subirlo a Play Store
+        if: env.HAY_FIRMA == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: TaxiCentral-PlayStore-${{ github.run_number }}
+          path: android/app/build/outputs/bundle/release/app-release.aab
+          retention-days: 90
