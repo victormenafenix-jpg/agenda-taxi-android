@@ -1,0 +1,25 @@
+{
+  "appId": "com.taxicel.agenda",
+  "appName": "Agenda Taxi",
+  "webDir": "www",
+  "server": {
+    "url": "https://agenda-taxi.pages.dev",
+    "androidScheme": "https",
+    "allowNavigation": ["agenda-taxi.pages.dev", "*.supabase.co"]
+  },
+  "android": {
+    "backgroundColor": "#f2b705",
+    "allowMixedContent": false,
+    "appendUserAgent": "AgendaTaxiApp"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1200,
+      "backgroundColor": "#f2b705",
+      "showSpinner": false
+    },
+    "PushNotifications": {
+      "presentationOptions": ["badge", "sound", "alert"]
+    }
+  }
+}
