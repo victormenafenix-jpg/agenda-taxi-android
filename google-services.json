@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "545146775569",
+    "firebase_url": "https://taxicelapp-default-rtdb.firebaseio.com",
+    "project_id": "taxicelapp",
+    "storage_bucket": "taxicelapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:545146775569:android:ccad2244d51f488ef129b0",
+        "android_client_info": {
+          "package_name": "com.taxicel.agenda"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5R6VjR5nh34Lgb5KxwSBSQ0dKjdSUcZc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
