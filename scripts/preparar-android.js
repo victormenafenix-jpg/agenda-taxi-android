@@ -49,7 +49,7 @@ else console.log('· Sin google-services.json todavía (las notificaciones nativ
 
 // 3b) Canal de notificaciones "servicios" con sonido propio (res/raw/servicio.wav)
 const ma = path.join(app, 'src', 'main', 'java', 'com', 'taxicel', 'agenda', 'MainActivity.java');
-fs.writeFileSync(ma, `package com.taxicel.agenda;
+fs.writeFileSync(ma, `package com.taxicel.taxicentral;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
