@@ -92,7 +92,8 @@ console.log('✓ Versión 1.0.' + n);
 const vg = path.join(raiz, 'android', 'variables.gradle');
 if (fs.existsSync(vg)) {
   let v = fs.readFileSync(vg, 'utf8');
-  v = v.replace(/compileSdkVersion\s*=\s*\d+/, 'compileSdkVersion = 36').replace(/targetSdkVersion\s*=\s*\d+/, 'targetSdkVersion = 36');
+  v = v.replace(/compileSdkVersion\s*=\s*\d+/, 'compileSdkVersion = 36').replace(/targetSdkVersion\s*=\s*\d+/, 'targetSdkVersion = 36')
+       .replace(/minSdkVersion\s*=\s*\d+/, 'minSdkVersion = 24');
   fs.writeFileSync(vg, v);
   const gp = path.join(raiz, 'android', 'gradle.properties');
   let p = fs.readFileSync(gp, 'utf8');
