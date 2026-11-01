@@ -1,6 +1,6 @@
 // Ajusta el proyecto de Android que crea Capacitor:
 //  - pone los íconos de Agenda Taxi
-//  - agrega los permisos (ubicación, notificaciones, vibrar, mantener pantalla, cámara)
+//  - agrega los permisos (ubicación, notificaciones, vibrar, mantener pantalla, cámara, micrófono)
 //  - si existe google-services.json (Firebase), lo copia para las notificaciones
 //  - numera la versión con el número de compilación de GitHub
 const fs = require('fs');
@@ -32,6 +32,8 @@ const permisos = [
   'android.permission.VIBRATE',
   'android.permission.WAKE_LOCK',
   'android.permission.CAMERA',
+  'android.permission.RECORD_AUDIO',
+  'android.permission.MODIFY_AUDIO_SETTINGS',
   'android.permission.USE_FULL_SCREEN_INTENT',
   'android.permission.SCHEDULE_EXACT_ALARM',
 ];
