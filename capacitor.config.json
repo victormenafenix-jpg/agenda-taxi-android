@@ -5,12 +5,16 @@
   "server": {
     "url": "https://agenda-taxi.pages.dev",
     "androidScheme": "https",
-    "allowNavigation": ["agenda-taxi.pages.dev", "*.supabase.co"]
+    "allowNavigation": [
+      "agenda-taxi.pages.dev",
+      "*.supabase.co"
+    ]
   },
   "android": {
     "backgroundColor": "#f2b705",
     "allowMixedContent": false,
-    "appendUserAgent": "AgendaTaxiApp"
+    "appendUserAgent": "AgendaTaxiApp",
+    "useLegacyBridge": true
   },
   "plugins": {
     "SplashScreen": {
@@ -19,7 +23,11 @@
       "showSpinner": false
     },
     "PushNotifications": {
-      "presentationOptions": ["badge", "sound", "alert"]
+      "presentationOptions": [
+        "badge",
+        "sound",
+        "alert"
+      ]
     }
   }
 }

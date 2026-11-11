@@ -29,6 +29,8 @@ const permisos = [
   'android.permission.ACCESS_FINE_LOCATION',
   'android.permission.ACCESS_COARSE_LOCATION',
   'android.permission.POST_NOTIFICATIONS',
+  'android.permission.FOREGROUND_SERVICE',
+  'android.permission.FOREGROUND_SERVICE_LOCATION',
   'android.permission.VIBRATE',
   'android.permission.WAKE_LOCK',
   'android.permission.CAMERA',
@@ -43,6 +45,17 @@ if (faltan.length) {
   fs.writeFileSync(mf, m);
 }
 console.log('✓ Permisos (' + faltan.length + ' agregados)');
+
+// 2b) GPS en segundo plano: nombre del aviso fijo que Android muestra mientras se comparte la ubicación
+const sx = path.join(res, 'values', 'strings.xml');
+if (fs.existsSync(sx)) {
+  let x = fs.readFileSync(sx, 'utf8');
+  if (!x.includes('capacitor_background_geolocation_notification_channel_name')) {
+    x = x.replace('</resources>', '    <string name="capacitor_background_geolocation_notification_channel_name">Ubicación en servicio</string>\n</resources>');
+    fs.writeFileSync(sx, x);
+  }
+  console.log('✓ GPS en segundo plano (aviso de ubicación)');
+}
 
 // 3) Firebase (notificaciones): solo si ya subiste google-services.json a la raíz del repositorio
 const gs = path.join(raiz, 'google-services.json');

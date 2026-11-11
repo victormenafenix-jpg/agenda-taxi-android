@@ -7,15 +7,16 @@
     "preparar": "node scripts/preparar-android.js"
   },
   "dependencies": {
+    "@capacitor-community/background-geolocation": "^1.2.26",
+    "@capacitor-community/keep-awake": "^6.0.0",
+    "@capacitor-community/text-to-speech": "^6.0.0",
     "@capacitor/android": "^7.0.0",
     "@capacitor/app": "^7.0.0",
     "@capacitor/core": "^7.0.0",
     "@capacitor/local-notifications": "^7.0.0",
     "@capacitor/push-notifications": "^7.0.0",
     "@capacitor/splash-screen": "^7.0.0",
-    "@capacitor/status-bar": "^7.0.0",
-    "@capacitor-community/keep-awake": "^6.0.0",
-    "@capacitor-community/text-to-speech": "^6.0.0"
+    "@capacitor/status-bar": "^7.0.0"
   },
   "devDependencies": {
     "@capacitor/cli": "^7.0.0"
