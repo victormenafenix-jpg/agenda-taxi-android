@@ -5,6 +5,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   armar:
     runs-on: ubuntu-latest
@@ -81,3 +84,16 @@ jobs:
           name: TaxiCentral-PlayStore-${{ github.run_number }}
           path: android/app/build/outputs/bundle/release/app-release.aab
           retention-days: 90
+
+      # Deja una copia del .aab y del APK en la rama "entregas" para bajarlos fácil
+      - name: Guardar copia en la rama entregas
+        if: env.HAY_FIRMA == 'true'
+        run: |
+          mkdir -p "$RUNNER_TEMP/entrega" && cd "$RUNNER_TEMP/entrega"
+          cp "$GITHUB_WORKSPACE/android/app/build/outputs/bundle/release/app-release.aab" "TaxiCentral-${{ github.run_number }}.aab"
+          cp "$GITHUB_WORKSPACE/android/app/build/outputs/apk/debug/app-debug.apk" "TaxiCentral-prueba-${{ github.run_number }}.apk"
+          git init -q -b entregas
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add . && git commit -q -m "Compilación ${{ github.run_number }}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" entregas
